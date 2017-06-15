@@ -167,6 +167,7 @@ function addTypecheckedFunctions(sock) {
 function ipForwardingMiddleware(webConfig) {
     function getForwardedIP(socket) {
         var req = socket.client.request;
+        console.log(req.headers);
         const xForwardedFor = req.headers['x-forwarded-for'];
         if (!xForwardedFor) {
             return socket.client.conn.remoteAddress;
@@ -184,6 +185,7 @@ function ipForwardingMiddleware(webConfig) {
     }
 
     function isTrustedProxy(ip) {
+        if (Config.get("proxy.trust-all") === true) { return true; }
         return webConfig.getTrustedProxies().indexOf(ip) >= 0;
     }
 
